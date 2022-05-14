@@ -49,9 +49,7 @@ impl Engine {
         self.projector = projector;
     }
 
-    pub fn count_objects(&self) -> usize {
-        self.objects.len()
-    }
+
     pub fn set_fps(&mut self, fps: u32) {
         self.fps = fps;
     }

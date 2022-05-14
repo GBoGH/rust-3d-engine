@@ -1,9 +1,11 @@
 use std::sync::{Arc, Mutex};
-use std::{time::Duration,thread::sleep};
+use std::{thread::sleep, time::Duration};
 
-use crate::{traits::{object::Object, projector::Projector}, modules::vector::Vector2Color};
+use crate::traits::{object::Object, projector::Projector};
+use crossterm::terminal::size;
 
-use super::{display::Display, vector::Vector2};
+
+use super::display::Display;
 
 use crate::projectors::paralel_simple::ParaleleSimpleProjector;
 
@@ -17,7 +19,8 @@ pub struct Engine {
 
 impl Engine {
     pub fn new() -> Self {
-        let display = Display::new(40, 40);
+        let (width, height) = size().unwrap();
+        let display = Display::new(width as usize, height as usize);
         let defaul_projector = Box::new(ParaleleSimpleProjector {});
         let objects: Vec<Arc<Mutex<dyn Object>>> = Vec::new();
         let projection_scale = 5;
@@ -27,9 +30,12 @@ impl Engine {
             objects,
             projector: defaul_projector,
             projection_scale,
-            fps
+            fps,
         }
     }
+
+
+
 
     pub fn add_object(&mut self, object: Arc<Mutex<dyn Object>>) {
         self.objects.push(object);
@@ -66,6 +72,5 @@ impl Engine {
 
         let sleep_duration = 1000 / self.fps;
         sleep(Duration::from_millis(sleep_duration as u64));
-
     }
 }

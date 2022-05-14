@@ -17,7 +17,7 @@ fn main() {
     
     let projector = Box::new(ParalelSkewProjector {});
     // engine.set_projector(projector);
-    // engine.set_fps(1);
+    engine.set_fps(10);
 
     let cube1 = Cube::new(Vector3(0.0, 0.0, 0.0), 1.0);
     engine.add_object(cube1.clone());

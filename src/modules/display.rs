@@ -1,19 +1,19 @@
 use rand;
 use rand::Rng;
+use std::io::stdout;
 
-use crate::modules::vector::Vector2;
-
+use crossterm::{terminal::{Clear, ClearType}, execute};
 use super::vector::Vector2Color;
 
 pub struct Display {
-    pub width: u32,
-    pub height: u32,
+    pub width: usize,
+    pub height: usize,
 
     pub buffer: Vec<Vec<u8>>,
 }
 
 impl Display {
-    pub fn new(width: u32, height: u32) -> Self {
+    pub fn new(width: usize, height: usize) -> Self {
         let buffer = vec![vec![0; width as usize]; height as usize];
         Display {
             width,
@@ -34,7 +34,12 @@ impl Display {
         self.buffer[y][x] = color;
     }
 
+    pub fn clear_terminal(&self) {
+        execute!(stdout(), Clear(ClearType::All)).unwrap();
+    }
+
     pub fn draw_to_terminal(&self) {
+        self.clear_terminal();
         for row in self.buffer.iter() {
             for pixel in row.iter() {
                 print!("{}", Self::get_character_by_color(*pixel));
